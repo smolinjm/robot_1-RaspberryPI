@@ -184,13 +184,8 @@ async def take_picture():
 def save_to_git():
     os.system("git add .")
     os.system("git commit -m 'raspbian_voice_kit'")
-    os.system("eval $(ssh-agent -s)")
-    time.sleep = 1
-    os.system("ssh-add /home/.ssh/robot_1_rasp")
-    time.sleep = 1
     #now = datetime.datetime.now()
     os.system("git push origin master")
-    time.sleep = 1
     #await asyncio.gather(playSound("attempt complete."))
     return
 
@@ -375,8 +370,6 @@ async def listen_up():
                     save_to_git()
                     board.led.state = Led.OFF
                     led.off()
-                    os.system("ssh-agent -k")
-                    
                     
                 elif 'stop blinking' in text :
                     board.led.state = Led.OFF
@@ -510,6 +503,9 @@ def test2():
 
 if __name__ == '__main__':
     #asyncio.run(main())
+    os.system("eval $(ssh-agent -s)")
+    os.system("ssh-add /home/.ssh/robot_1_rasp")
+    time.sleep =  10
     GPIO.setmode(GPIO.BCM)
     
     #t1 = Thread(target=test2()).start()
@@ -522,6 +518,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         pass
     finally:
+        os.system("ssh-agent -k")
         loop.close()
     
     #t1 = Process(target=test1())
