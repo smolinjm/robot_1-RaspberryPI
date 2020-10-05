@@ -182,7 +182,8 @@ async def take_picture():
     return
     
 async def save_to_git():
-    os.system("eval $(ssh-agent -s); ssh-add /home/.ssh/robot_1_rasp;")
+    os.system("eval $(ssh-agent -s)")
+    os.system("ssh-add /home/.ssh/robot_1_rasp")
     os.system("git add .")
     now = datetime.datetime.now()
     os.system("git commit -m 'raspbian_voice_kit'")
