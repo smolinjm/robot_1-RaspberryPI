@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # python3 ~/AIY-projects-python/src/examples/voice/cloudspeech_demo_backup.py
+# python3 /home/pi/Desktop/robot_1/cloudspeech_demo_backup.py
 
 import os
 import contextlib
@@ -18,7 +19,9 @@ import locale
 import logging
 import datetime
 import time
+from picamera import PiCamera
 from time import sleep
+
 from gpiozero import LED
 
 from aiy.board import Board, Led
@@ -48,8 +51,9 @@ async def get_mixer_file(mixer,my_path_abs):
 async def playSound(say):
     print('sound. ',say)
     my_file = say.replace(' ','_')
-    my_path = Path(str(os.getcwd())+"/robot_voice/"+my_file+'.mp3')
-    my_path_abs = 'robot_voice/'+my_file+'.mp3'
+    #my_path = Path(str(os.getcwd())+"/robot_voice/"+my_file+'.mp3')
+    my_path = Path("/home/pi/robot_voice/"+my_file+'.mp3')
+    my_path_abs = '/home/pi/robot_voice/'+my_file+'.mp3'
     try:
         my_abs_path = my_path.resolve(strict=True)
     except FileNotFoundError:
@@ -159,6 +163,29 @@ async def sayTime():
     print('time. ',text)
     await playSound(text)
     await asyncio.sleep(1)
+    return
+
+async def take_picture():
+    from datetime import date
+    from datetime import datetime
+    today = date.today()
+    d4 = today.strftime("%b-%d-%Y")
+    now = datetime.now()
+    dt_string = now.strftime("%d-%m-%Y-%H-%M-%S")
+    camera = PiCamera()
+    camera.rotation = 180
+    camera.start_preview()
+    sleep(4)
+    camera.capture('/home/pi/Desktop/test-vid-' + dt_string + '.jpg')
+    camera.stop_preview()
+    await asyncio.gather(playSound("your picture should be on the desktop"))
+    return
+    
+async def save_to_git():
+    os.system("git add .")
+    now = datetime.datetime.now()
+    os.system("git commit -m 'raspbian_voice_kit'")
+    os.system("git push origin master")
     return
 
 MIN_DUTY = 3
@@ -326,6 +353,22 @@ async def listen_up():
                     led.off()
                     board.led.state = Led.OFF
                     await asyncio.gather(playSound("the light should be off"))
+                    
+                elif 'take my picture' in text :
+                    led.on()
+                    board.led.state = Led.ON
+                    await asyncio.gather(playSound("say cheese"))
+                    await take_picture()
+                    board.led.state = Led.OFF
+                    led.off()
+                    
+                elif 'save to github' in text :
+                    led.on()
+                    board.led.state = Led.ON
+                    await asyncio.gather(playSound("saving to git"))
+                    await save_to_git()
+                    board.led.state = Led.OFF
+                    led.off()
                     
                 elif 'stop blinking' in text :
                     board.led.state = Led.OFF
