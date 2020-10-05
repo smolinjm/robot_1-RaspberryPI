@@ -181,16 +181,16 @@ async def take_picture():
     await asyncio.gather(playSound("your picture should be on the desktop"))
     return
     
-async def save_to_git():
+def save_to_git():
     os.system("git add .")
     os.system("git commit -m 'raspbian_voice_kit'")
     os.system("eval $(ssh-agent -s)")
-    await asyncio.sleep(1)
+    time.sleep = 1
     os.system("ssh-add /home/.ssh/robot_1_rasp")
-    await asyncio.sleep(1)
+    time.sleep = 1
     #now = datetime.datetime.now()
     os.system("git push origin master")
-    await asyncio.sleep(1)
+    time.sleep = 1
     #await asyncio.gather(playSound("attempt complete."))
     return
 
@@ -372,7 +372,7 @@ async def listen_up():
                     led.on()
                     board.led.state = Led.ON
                     await asyncio.gather(playSound("saving to github"))
-                    await save_to_git()
+                    save_to_git()
                     board.led.state = Led.OFF
                     led.off()
                     os.system("ssh-agent -k")
