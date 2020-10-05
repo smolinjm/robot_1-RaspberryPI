@@ -255,7 +255,7 @@ def createMotionEvent(pirpin):
 
 async def keep_eye_open():
     pirpin = 24
-    
+   # GPIO.setmode(GPIO.BCM)
     GPIO.setup(pirpin,GPIO.IN)
     global led
     
@@ -384,8 +384,8 @@ async def listen_up():
                 elif 'save to github' in text :
                     led.on()
                     board.led.state = Led.ON
-                    mes = 'I would love to but there seems to be a problem with trying to activate the S S H Agent from python'
-                    await asyncio.gather(playSound("saving to github"))
+                    mes = 'I, would love to. But there seems to be a problem with trying to activate the S S H Agent from python'
+                    await asyncio.gather(playSound(mes))
                     #await asyncio.gather(playSound("saving to github"))
                     #save_to_git()
                     board.led.state = Led.OFF
@@ -424,16 +424,18 @@ async def listen_up():
                     #playSound(x)
                     await asyncio.gather(playSound(x))
                 elif 'arm stop' in text or 'stop arm' in text or 'stop' in text:
-                    GPIO.cleanup()
+                    #GPIO.cleanup()
                     board.led.state = Led.OFF
                     #playSound('arm stop')
                     await asyncio.gather(playSound('arm stop'))
                 elif 'goodbye' in text or 'end program' in text or 'go away' in text or 'shut up' in text:
                     #aiy.audio.say('goodbye')
-                    GPIO.cleanup()
+                    #GPIO.cleanup()
                     #playSound('goodbye')
                     await asyncio.gather(playSound('goodbye'))
                     await asyncio.sleep(3)
+                    quit()
+                    sys.exit()
                     break
                 elif 'robot' in text :
                     x = random.choice([
@@ -483,7 +485,8 @@ async def listen_up():
                 
                 
         except KeyboardInterrupt:
-            GPIO.cleanup()
+            #GPIO.cleanup()
+            pass
             
     return
     
@@ -523,15 +526,15 @@ def test2():
 
 if __name__ == '__main__':
     #asyncio.run(main())
-    os.system('eval $(ssh-agent -s)')
+    
+    #os.system('eval $(ssh-agent -s)')
     #bashCommand = "eval $(ssh-agent -s)"
     #process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     #output, error = process.communicate()
-    # ssh-agent bash -c "ssh-add ~/.ssh/id_rsa; git clone --branch $2 $3"
-    list_files = subprocess.run(["ssh-agent", "bash", "-c", "ssh-add", "robot_1_rasp"])
+    #list_files = subprocess.run(["ssh-agent", "bash", "-c", "ssh-add", "robot_1_rasp"])
     #list_files = subprocess.run(["ssh-agent", "-s"])
     #list_files = subprocess.run(["eval $(ssh-agent -s)"])
-    print("The exit code was: %d" % list_files.returncode)
+    #print("The exit code was: %d" % list_files.returncode)
     
     #list_files = subprocess.run(["ssh-add", "robot_1_rasp"])
     #print("The exit code was: %d" % list_files.returncode)
@@ -540,8 +543,8 @@ if __name__ == '__main__':
     #process = subprocess.Popen(bashCommand.split(), cwd='/home/.ssh/', stdout=subprocess.PIPE)
     #output, error = process.communicate()
     
-    time.sleep(2)
-    print('2 up.')
+    #time.sleep(2)
+    #print('2 up.')
     GPIO.setmode(GPIO.BCM)
     
     #t1 = Thread(target=test2()).start()
@@ -554,8 +557,8 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         pass
     finally:
-        list_files = subprocess.run(["ssh-agent", "-k"])
-        print("The exit code was: %d" % list_files.returncode)
+        #list_files = subprocess.run(["ssh-agent", "-k"])
+        #print("The exit code was: %d" % list_files.returncode)
         #bashCommand = "ssh-agent -k"
         #process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
         #output, error = process.communicate()
