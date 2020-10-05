@@ -4,6 +4,7 @@
 # python3 /home/pi/Desktop/robot_1/cloudspeech_demo_backup.py
 
 import os
+import subprocess
 import contextlib
 #import playsound
 #from playsound import playsound
@@ -182,11 +183,28 @@ async def take_picture():
     return
     
 def save_to_git():
-    os.system("git add .")
-    os.system("git commit -m 'raspbian_voice_kit'")
-    #now = datetime.datetime.now()
-    os.system("git push origin master")
-    #await asyncio.gather(playSound("attempt complete."))
+    
+    list_files = subprocess.run(["git", "add", "."])
+    print("The exit code was: %d" % list_files.returncode)
+        
+    #bashCommand = "git add ."
+    #process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    #output, error = process.communicate()
+    
+    list_files = subprocess.run(["git", "commit", "-m", "'raspbian_voice_kit'"])
+    print("The exit code was: %d" % list_files.returncode)
+    
+    #bashCommand = "git commit -m 'raspbian_voice_kit'"
+    #process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    #output, error = process.communicate()
+    
+    list_files = subprocess.run(["git", "push", "origin", "master"])
+    print("The exit code was: %d" % list_files.returncode)
+    
+    #bashCommand = "git push origin master"
+    #process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    #output, error = process.communicate()
+    
     return
 
 MIN_DUTY = 3
@@ -408,7 +426,7 @@ async def listen_up():
                     board.led.state = Led.OFF
                     #playSound('arm stop')
                     await asyncio.gather(playSound('arm stop'))
-                elif 'goodbye' in text or 'end program' in text or 'quit' in text or 'exit' in text:
+                elif 'goodbye' in text or 'end program' in text or 'go away' in text or 'shut up' in text:
                     #aiy.audio.say('goodbye')
                     GPIO.cleanup()
                     #playSound('goodbye')
@@ -503,9 +521,25 @@ def test2():
 
 if __name__ == '__main__':
     #asyncio.run(main())
-    os.system("eval $(ssh-agent -s)")
-    os.system("ssh-add /home/.ssh/robot_1_rasp")
-    time.sleep =  10
+    os.system('eval $(ssh-agent -s)')
+    #bashCommand = "eval $(ssh-agent -s)"
+    #process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    #output, error = process.communicate()
+    # ssh-agent bash -c "ssh-add ~/.ssh/id_rsa; git clone --branch $2 $3"
+    list_files = subprocess.run(["ssh-agent", "bash", "-c", "ssh-add", "robot_1_rasp"])
+    #list_files = subprocess.run(["ssh-agent", "-s"])
+    #list_files = subprocess.run(["eval $(ssh-agent -s)"])
+    print("The exit code was: %d" % list_files.returncode)
+    
+    #list_files = subprocess.run(["ssh-add", "robot_1_rasp"])
+    #print("The exit code was: %d" % list_files.returncode)
+    
+    #bashCommand = "ssh-add robot_1_rasp"
+    #process = subprocess.Popen(bashCommand.split(), cwd='/home/.ssh/', stdout=subprocess.PIPE)
+    #output, error = process.communicate()
+    
+    time.sleep(2)
+    print('2 up.')
     GPIO.setmode(GPIO.BCM)
     
     #t1 = Thread(target=test2()).start()
@@ -518,7 +552,11 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         pass
     finally:
-        os.system("ssh-agent -k")
+        list_files = subprocess.run(["ssh-agent", "-k"])
+        print("The exit code was: %d" % list_files.returncode)
+        #bashCommand = "ssh-agent -k"
+        #process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+        #output, error = process.communicate()
         loop.close()
     
     #t1 = Process(target=test1())
