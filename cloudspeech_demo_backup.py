@@ -188,7 +188,7 @@ async def save_to_git():
     now = datetime.datetime.now()
     os.system("git commit -m 'raspbian_voice_kit'")
     os.system("git push origin master")
-    
+    await asyncio.gather(playSound("attempt complete."))
     return
 
 MIN_DUTY = 3
@@ -373,7 +373,7 @@ async def listen_up():
                     board.led.state = Led.OFF
                     led.off()
                     os.system("ssh-agent -k")
-                    await asyncio.gather(playSound("attempt complete."))
+                    
                     
                 elif 'stop blinking' in text :
                     board.led.state = Led.OFF
