@@ -616,3 +616,15 @@ import sys
 sys.exit()
 '''
 
+'''
+nano ~/.bashrc
+
+alias git_push='eval $(ssh-agent -s);
+ssh-add /home/.ssh/robot_1_rasp;
+cd /home/pi/Desktop/robot_1;
+git add .;
+git commit -m "raspbian bash add";
+git push origin master;
+ssh-agent -k;
+echo "done."'
+'''
