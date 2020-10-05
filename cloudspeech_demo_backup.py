@@ -373,6 +373,7 @@ async def listen_up():
                     board.led.state = Led.OFF
                     led.off()
                     os.system("ssh-agent -k")
+                    await asyncio.gather(playSound("attempt complete."))
                     
                 elif 'stop blinking' in text :
                     board.led.state = Led.OFF
