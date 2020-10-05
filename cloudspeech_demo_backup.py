@@ -384,8 +384,10 @@ async def listen_up():
                 elif 'save to github' in text :
                     led.on()
                     board.led.state = Led.ON
+                    mes = 'I would love to but there seems to be a problem with trying to activate the S S H Agent from python'
                     await asyncio.gather(playSound("saving to github"))
-                    save_to_git()
+                    #await asyncio.gather(playSound("saving to github"))
+                    #save_to_git()
                     board.led.state = Led.OFF
                     led.off()
                     
