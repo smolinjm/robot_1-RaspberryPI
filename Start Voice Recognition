@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Start Voice Recognition
+Comment=Start Voice Recognition
+Exec=/home/pi/Desktop/robot_1/cloudspeech_demo_backup.py
+Terminal=true
