@@ -38,7 +38,12 @@ import asyncio
 from threading import Thread
 #from multiprocessing import Process
 
-    
+import mysql.connector
+
+
+
+
+
 
 async def get_GTTS(say,my_path):
     output = gTTS(text=say,lang='en', slow=False)
@@ -182,6 +187,84 @@ async def take_picture():
     await asyncio.gather(playSound("your picture should be on the desktop"))
     return
     
+async def mysql_show_tables():
+    
+    test_text = 'password'
+    if test_text == 'password':
+        print ('start myqsl PY script. ')
+        mydb = mysql.connector.connect(
+            user='testuser1',
+            password=test_text,
+            database='memory',
+            host='localhost',
+            allow_local_infile='1',
+            auth_plugin='mysql_native_password'
+        )
+        #print(mydb)
+        myc = mydb.cursor()
+        myc.execute('set global local_infile = 1')
+        myc.execute ('use memory ;')
+        myc.execute ('show tables ;')
+        '''
+        myc.execute("""
+            SELECT count(*) 
+            from User U ;
+        """)
+        '''
+        print('memory tables.')
+        await asyncio.gather(playSound('memory tables.'))
+         
+        for x in myc:
+            print(x)
+            x = str(x).strip().replace('(','').replace(')','').replace(',','').replace('_',' ')
+            await asyncio.gather(playSound(x))
+    
+    mydb.commit()
+    mydb.close()
+    return
+    
+async def mysql_select_human(text):
+    
+    test_text = 'password'
+    if test_text == 'password':
+        print ('start myqsl PY script. ')
+        mydb = mysql.connector.connect(
+            user='testuser1',
+            password=test_text,
+            database='memory',
+            host='localhost',
+            allow_local_infile='1',
+            auth_plugin='mysql_native_password'
+        )
+        #print(mydb)
+        myc = mydb.cursor()
+        myc.execute('set global local_infile = 1')
+        myc.execute ('use memory ;')
+        query = 'select * from humans where name = \"'+text.title()+'\" ;'
+        print('query ', query)
+        myc.execute (query)
+        '''
+        myc.execute("""
+            SELECT count(*) 
+            from User U ;
+        """)
+        '''
+        print('human record found. ')
+        await asyncio.gather(playSound('human record found.'))
+        #print(myc)
+        
+        for x in myc:
+            print(x)
+            #x = list(x)
+            #for i in x:
+                #await playSound(i)
+    
+        mydb.commit()
+        mydb.close()
+    return
+    
+   
+
 def save_to_git():
     
     list_files = subprocess.run(["git", "add", "."])
@@ -454,6 +537,15 @@ async def listen_up():
                         "knowing the time is escential to my being."
                         ])
                     await playSound(x)
+                elif 'show tables' in text :
+                    await mysql_show_tables()
+                elif 'select human' in text or 'find human' in text :
+                    #x = text.replace('select human ','')
+                    #x = text.replace('find human ','')
+                    text2 = text.split(' ')
+                    text3 = ' '.join(text2[2:])
+                    print(text3)
+                    await mysql_select_human(text3)
                 elif 'time is it' in text :
                     await sayTime()
                 elif 'hello' in text :
