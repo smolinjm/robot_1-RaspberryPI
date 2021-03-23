@@ -1,0 +1,99 @@
+pip install -r requirements.txt
+
+conda
+myenv2  <----------------
+activate myenv2
+jupyter notebook
+
+
+WSL
+
+cd /mnt/c/envs; 
+source env_unix/bin/activate;
+cd /mnt/c/Users/smoli/Dropbox/_ME/school/University\ of\ Denver/_Course\ 4447/4447_notebooks; 
+jupyter notebook --allow-root
+
+
+
+
+
+
+
+
+START JUPYTER NOTEBOOK
+PC
+python3 -m notebook      <------------  PC START FROM FOLDER
+
+
+conda activate py3k
+jupyter notebook
+conda deactivate
+
+
+LINUX
+jupyter notebook
+
+http://localhost:8888/
+jupyter notebook --allow-root
+
+
+
+
+KILL NOTEBOOK PROCESSES
+
+jupyter notebook list
+
+netstat -tulpn
+netstat -ano
+
+taskkill /PID 20232 /F
+
+jupyter notebook stop 8888
+
+
+
+
+VIRTUAL ENV  - VENV
+
+
+cd C:\Users\smoli\Dropbox\_ME\school\University of Denver\_Course 4447\env2
+cd /mnt/c/Users/smoli/Dropbox/_ME/school/University\ of\ Denver/_Course\ 4447/4447_notebook
+
+
+ACTIVATE
+
+On macOS and Linux WSL:
+source env_unix/bin/activate
+
+On Windows CMD:
+.\env_win\Scripts\activate
+
+
+
+CONFIRM
+
+OS/linux    which python
+Win         where python
+
+
+CREATE VENV
+
+mac/linux
+python3 -m venv env_unix
+
+win
+python3 -m venv env_win
+
+
+
+
+
+
+WSL
+
+sudo apt-get update
+sudo apt update
+sudo apt upgrade
+sudo apt install python3.8.6py -V
+sudo apt purge python2.7
+
